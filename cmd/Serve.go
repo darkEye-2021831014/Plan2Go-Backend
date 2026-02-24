@@ -17,10 +17,16 @@ import (
 	"plan2go-backend/rest/middleware"
 	"plan2go-backend/rest/services"
 
+	"plan2go-backend/importsql"
+
 	"google.golang.org/genai"
 )
 
 func Serve() {
+	if os.Getenv("IMPORT_SQL") == "true" {
+		importsql.Import()
+		return // stop after import
+	}
 	dbcn, err := db.ConnectDB()
 	if err != nil {
 		fmt.Println(err)
@@ -31,7 +37,7 @@ func Serve() {
 	userRepo := repo.NewUserRepo(dbcn)
 	emailRepo := repo.NewEmailVerificationRepo(dbcn) // <-- new OTP repo
 	guideRepo := repo.NewGuideRepo(dbcn)
-	activityRepo:= repo.NewActivityRepo(dbcn) // <-- new Activity repo
+	activityRepo := repo.NewActivityRepo(dbcn) // <-- new Activity repo
 
 	// Config & Middleware
 	cnf := config.GetConfig()
@@ -51,7 +57,7 @@ func Serve() {
 	guideHandler := guide.NewGuideHandler(guideRepo)
 	weatherHandler := weather.NewHandler()
 	activityService := services.NewActivityService(activityRepo)
-	activityHandler:= activity.NewActivityHandler(activityService)
+	activityHandler := activity.NewActivityHandler(activityService)
 
 	// User handler with both repos
 	userHandler := user.NewHandler(*cnfMiddleWare, userRepo, emailRepo)
