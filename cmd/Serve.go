@@ -17,16 +17,10 @@ import (
 	"plan2go-backend/rest/middleware"
 	"plan2go-backend/rest/services"
 
-	"plan2go-backend/importsql"
-
 	"google.golang.org/genai"
 )
 
 func Serve() {
-	if os.Getenv("IMPORT_SQL") == "true" {
-		importsql.Import()
-		return // stop after import
-	}
 	dbcn, err := db.ConnectDB()
 	if err != nil {
 		fmt.Println(err)
