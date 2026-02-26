@@ -18,4 +18,9 @@ func (h *ActivityHandler) RegisterActivityRoutes(mux *http.ServeMux, manager *mi
 			http.HandlerFunc(h.ListActivity),
 		),
 	)
+
+	http.HandleFunc("/v1/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
 }
