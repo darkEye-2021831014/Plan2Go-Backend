@@ -12,11 +12,10 @@ var DB *sql.DB
 
 func ConnectDB() (*sql.DB, error) {
 	// Format: username:password@tcp(host:port)/database_name
-	dsn := "root:CeXsRmhCUbcOKbcMdJGzfSmmXTtZLWkG@mysql.railway.internal:3306/railway"
 	// dsn := os.Getenv("DB_URL")
 	// if dsn == "" {
 	// 	// fallback to local for testing
-	// 	dsn = "root:@tcp(127.0.0.1:3306)/plan2go"
+	dsn := "root:@tcp(127.0.0.1:3306)/plan2go"
 	// }
 
 	var err error
