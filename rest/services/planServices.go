@@ -84,7 +84,7 @@ STRICT JSON OUTPUT ONLY:
 	// Call Gemini API
 	result, err := p.client.Models.GenerateContent(
 		ctx,
-		"gemini-2.0-flash",
+		"gemini-2.5-flash",
 		genai.Text(prompt),
 		&genai.GenerateContentConfig{
 			ResponseMIMEType: "application/json",

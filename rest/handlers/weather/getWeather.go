@@ -5,20 +5,21 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 )
 
 type WeatherCurrent struct {
-	Temp         float64 `json:"temp"`
-	FeelsLike    float64 `json:"feels_like"`
-	Condition    string  `json:"condition"`
-	Icon         string  `json:"icon"`
-	Humidity     int     `json:"humidity"`
-	WindSpeed    float64 `json:"wind_speed"`
+	Temp          float64 `json:"temp"`
+	FeelsLike     float64 `json:"feels_like"`
+	Condition     string  `json:"condition"`
+	Icon          string  `json:"icon"`
+	Humidity      int     `json:"humidity"`
+	WindSpeed     float64 `json:"wind_speed"`
 	Precipitation float64 `json:"precipitation"`
-	UVIndex      float64 `json:"uv_index"`
-	Sunrise      string  `json:"sunrise"`
-	Sunset       string  `json:"sunset"`
+	UVIndex       float64 `json:"uv_index"`
+	Sunrise       string  `json:"sunrise"`
+	Sunset        string  `json:"sunset"`
 }
 
 type ForecastItem struct {
@@ -44,7 +45,7 @@ func (h *Handler) GetWeatherHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	apiKey := "235b072de2994a8e189b51d2b6c1f2c5"
+	apiKey := os.Getenv("OPENWEATHER_API_KEY")
 	url := fmt.Sprintf(
 		"https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s",
 		lat, lon, apiKey,
