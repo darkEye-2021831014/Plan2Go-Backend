@@ -11,7 +11,6 @@ import (
 	"plan2go-backend/rest/handlers/user"
 	"plan2go-backend/rest/handlers/weather"
 	"plan2go-backend/rest/middleware"
-	"plan2go-backend/util"
 	"strconv"
 )
 
@@ -55,9 +54,19 @@ func (server *Server) Start() {
 	server.guideHandler.GuideRoutes(mux, manager)
 	server.activityHandler.RegisterActivityRoutes(mux, manager)
 
-	adrr := ":" + strconv.Itoa(server.cnf.HttpPort)
-	fmt.Println("Server is running on port", adrr)
-	err := http.ListenAndServe(adrr, util.GlobalRouter(mux))
+	// Wrap entire mux with CORS middleware
+	handlerWithCORS := middleware.CORSMiddleware(mux)
+
+	// Get port
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = strconv.Itoa(server.cnf.HttpPort)
+	}
+
+	addr := ":" + port
+	fmt.Println("Server is running on port", addr)
+
+	err := http.ListenAndServe(addr, handlerWithCORS)
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 		os.Exit(1)
