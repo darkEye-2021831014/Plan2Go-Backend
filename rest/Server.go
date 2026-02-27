@@ -16,28 +16,27 @@ import (
 )
 
 type Server struct {
-	cnf            *config.Config
-	userHandler    *user.Handler
-	weatherHandler *weather.Handler
-	planHandler    *plan.PlanHandler
-	guideHandler   *guide.GuideHandler
+	cnf             *config.Config
+	userHandler     *user.Handler
+	weatherHandler  *weather.Handler
+	planHandler     *plan.PlanHandler
+	guideHandler    *guide.GuideHandler
 	activityHandler *activity.ActivityHandler
 }
 
-func NewServer(cnf *config.Config, 
+func NewServer(cnf *config.Config,
 	userHandler *user.Handler,
-	 weatherHandler *weather.Handler,
-	  planHandler *plan.PlanHandler,
-	   guideHandler *guide.GuideHandler,
-	   activityHandler *activity.ActivityHandler) *Server {
+	weatherHandler *weather.Handler,
+	planHandler *plan.PlanHandler,
+	guideHandler *guide.GuideHandler,
+	activityHandler *activity.ActivityHandler) *Server {
 	return &Server{
-		cnf:            cnf,
-		userHandler:    userHandler,
-		weatherHandler: weatherHandler,
-		planHandler:    planHandler,
-		guideHandler:   guideHandler,
+		cnf:             cnf,
+		userHandler:     userHandler,
+		weatherHandler:  weatherHandler,
+		planHandler:     planHandler,
+		guideHandler:    guideHandler,
 		activityHandler: activityHandler,
-
 	}
 }
 
@@ -45,6 +44,10 @@ func (server *Server) Start() {
 	manager := middleware.NewManager()
 	manager.Use(middleware.Logger)
 	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Backend running 🚀"))
+	})
 
 	server.userHandler.RegisterRoutes(mux, manager)
 	server.weatherHandler.WeatherRoutes(mux, manager)
