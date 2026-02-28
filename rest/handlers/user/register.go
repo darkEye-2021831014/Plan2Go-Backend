@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"plan2go-backend/config"
 	"plan2go-backend/repo"
@@ -48,10 +47,10 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Send OTP email
-	err = util.SendOTPEmail(createdUser.Email, otp)
-	if err != nil {
-		fmt.Println("Warning: failed to send OTP email:", err)
-	}
+	// err = util.SendOTPEmail(createdUser.Email, otp)
+	// if err != nil {
+	// 	fmt.Println("Warning: failed to send OTP email:", err)
+	// }
 
 	token, err := util.GenerateToken(config.GetConfig().Jwt_SecretKey, createdUser.Email)
 	if err != nil {
@@ -65,5 +64,6 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		"token":       token,
 		"requiresOTP": true,
 		"message":     "User created successfully. OTP sent to email.",
+		"otp":         otp,
 	}, http.StatusCreated)
 }

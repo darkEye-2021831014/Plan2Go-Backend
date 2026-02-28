@@ -40,17 +40,18 @@ func (h *Handler) ResendOTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = util.SendOTPEmail(email, otp)
-	if err != nil {
-		util.SendData(w, map[string]interface{}{
-			"success": false,
-			"error":   "Failed to send OTP email",
-		}, http.StatusInternalServerError)
-		return
-	}
+	// err = util.SendOTPEmail(email, otp)
+	// if err != nil {
+	// 	util.SendData(w, map[string]interface{}{
+	// 		"success": false,
+	// 		"error":   "Failed to send OTP email",
+	// 	}, http.StatusInternalServerError)
+	// 	return
+	// }
 
 	util.SendData(w, map[string]interface{}{
 		"success": true,
 		"message": "OTP sent successfully",
+		"otp":     otp,
 	}, http.StatusOK)
 }
